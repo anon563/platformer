@@ -72,11 +72,32 @@ class Character extends Actor {
             }
             if (yCollision) {
                 newPos.y += (this.vel.y > 0 ? -(newPos.y + this.size.y - obstacle.pos.y) : obstacle.pos.y + obstacle.size.y - newPos.y) % obstacle.size.y;
+                if (this.pos.y < obstacle.pos.y && this.vel.y > this.gravity) this.land = true;
                 this.vel.y = 0;
             }
         });
-        this.pos = newPos;
 
+        
+        // Dust
+        const regularDust = (this.isGrounded || this.land) || (this.keys.jump && this.isWall && this.vel.y === -4);
+        if ((Math.abs(this.vel.x) > 2 || Math.abs(this.vel.y) > 2) && this.isGrounded || this.land || this.isWall) {
+            const dustPos = this.land ? newPos : this.pos;
+            for (let i = 0; i < (regularDust ? 48 : 16); i++) {
+                activity.dustParticles.push(new Dust(
+                    dustPos.plus(new Vector2((this.dir ? 0 : this.size.x) + Math.round(Math.random() * 4) - 2, this.size.y + (!this.isGrounded ? -4 : 0) + Math.round(Math.random() * 4 - 2))),
+                    new Vector2(
+                        (Math.random() * 0.25) * (this.dir ? -0.5 : 0.5) * (this.isWall ? -1 : 1) * (regularDust ? 3 : this.vel.y),
+                        -0.25 + Math.random() * 0.25 - 0.125
+                    ),
+                    Math.round((16 + Math.random() * 16) * (regularDust ? 1 : Math.abs(Math.floor(this.vel.y)) / 16)),
+                    (Math.random() > 0.5 ? 1 : 2)
+                ));
+            }
+        }
+
+        if (this.land) this.land = false;
+        this.pos = newPos;
+        
         // Gun
         if (this.keys.attack && this.canShoot) {
             this.canShoot = false;
@@ -89,9 +110,9 @@ class Character extends Actor {
                 angle = this.dir ? -Math.PI * 0.25 : Math.PI * 1.25;
             }
             
-            const pos = this.pos.plus(this.size.times(0.5)).plus(this.size.mult(new Vector2((this.dir ? 0.8 : -1) * (this.keys.down || this.keys.up ? 0.8 : 1), this.keys.down ? (0.25) : (this.keys.up ? (-0.5) : (-0.2)))));
-
-            activity.actors.push(new Bullet(pos, new Vector2(Math.cos(angle), Math.sin(angle))));
+            const pos = this.pos.plus(this.size.times(0.5)).plus(this.size.mult(new Vector2((this.dir ? 0.6 : -0.8) * (this.keys.down || this.keys.up ? 0.7 : 1), this.keys.down ? (0.1) : (this.keys.up ? (-0.4) : (-0.15)))));
+            const bullet = new Bullet(pos, new Vector2(Math.cos(angle), Math.sin(angle)));
+            if (!CollisionBox2.intersectingCollisionBoxes(bullet, activity.tiles).length) activity.actors.push(bullet);
         }
         if (!this.keys.attack && !this.canShoot) this.canShoot = true;
 

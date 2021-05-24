@@ -1,18 +1,18 @@
 class Assets {
     images = new Object;
     imageDataList = [
-        { id: 'opening', src: 'img/opening.png' },
+        // { id: 'opening', src: 'img/opening.png' },
 
-        { id: 'noel_mugshot', src: 'img/noel_mugshot.png' },
-        { id: 'flare_mugshot', src: 'img/flare_mugshot.png' },
-        { id: 'watame_mugshot', src: 'img/watame_mugshot.png' },
-        { id: 'rushia_mugshot', src: 'img/rushia_mugshot.png' },
-        { id: 'ok', src: 'img/ok.png' },
+        // { id: 'noel_mugshot', src: 'img/noel_mugshot.png' },
+        // { id: 'flare_mugshot', src: 'img/flare_mugshot.png' },
+        // { id: 'watame_mugshot', src: 'img/watame_mugshot.png' },
+        // { id: 'rushia_mugshot', src: 'img/rushia_mugshot.png' },
+        // { id: 'ok', src: 'img/ok.png' },
 
-        { id: 'noel_idle', src: 'img/noel_idle.png' },
+        // { id: 'noel_idle', src: 'img/noel_idle.png' },
         { id: 'watame_idle', src: 'img/watame_idle.png' },
-        { id: 'watame_focus', src: 'img/watame_focus.png' },
-        { id: 'flash', src: 'img/flash.png' },
+        // { id: 'watame_focus', src: 'img/watame_focus.png' },
+        // { id: 'flash', src: 'img/flash.png' },
         
         { id: 'flare_idle', src: 'img/flare_idle_gun.png' },
         { id: 'flare_idle_down', src: 'img/flare_idle_gun_down.png' },
@@ -31,14 +31,9 @@ class Assets {
         { id: 'flare_wall_down', src: 'img/flare_wall_gun_down.png' },
         { id: 'flare_wall_up', src: 'img/flare_wall_gun_up.png' },
 
-        { id: 'road', src: 'img/road.png' },
-        { id: 'kintsuba', src: 'img/kintsuba.png' },
+        // { id: 'kintsuba', src: 'img/kintsuba.png' },
         { id: 'bullet', src: 'img/bullet.png' },
-        { id: 'shadow', src: 'img/shadow.png' },
-        { id: 'naan', src: 'img/naan.png' },
-        { id: 'bg', src: 'img/bg.png' },
-        { id: 'flower', src: 'img/flower.png' },
-        { id: 'petal', src: 'img/petal.png' }
+        // { id: 'naan', src: 'img/naan.png' }
     ];
     
     constructor() {

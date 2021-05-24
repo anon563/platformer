@@ -21,6 +21,7 @@ class Stage extends Activity {
     ];
 
     tiles = [];
+    dustParticles = [];
 
     constructor(keys) {
         super();
@@ -36,7 +37,6 @@ class Stage extends Activity {
         cx.save();
 
         this.actors = this.actors.filter(actor => CollisionBox2.includedIn(actor, { pos: new Vector2(0, 0), size: new Vector2(30 * 16, 16 * 16) }));
-
         const actors = [this.player, ...this.actors];
         // Actors logic
         actors.forEach(actor => actor.update(game, this));
@@ -58,6 +58,14 @@ class Stage extends Activity {
             actor.display(cx, game.assets);
             if (DEBUGMODE) actor.displayCollisionBox(game);
             cx.restore();
+        });
+
+        // Dust
+        cx.fillStyle = '#fff';
+        this.dustParticles = this.dustParticles.filter(particle => particle.life);
+        this.dustParticles.forEach(particle => {
+            particle.update();
+            particle.display(cx);
         });
 
         // Tiles
