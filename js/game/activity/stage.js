@@ -2,18 +2,18 @@ class Stage extends Activity {
     actors = [new Character({}, WATAME, 'idle', false, new Vector2(344, 36))];
 
     rawTiles = [
-        'xx   xxxxx                  xx',
-        'x     xxx                    x',
-        'x     xxx                    x',
+        'xx   xxxxx            o     xx',
+        'xo    xxx                    x',
+        'x     xxxo                   x',
         'x     xxx                    x',
         'x                            x',
         'x   xxxxxxx   xx   xxxxxxx   x',
-        'x        xx   xx     xxx     x',
+        'x        xx   xx     xxxo    x',
         'x        xx          xxx     x',
         'x        xx          xxx     x',
         'x        xx                  x',
         'xxxxxx   xx        xxxxxxxxxxx',
-        'x        xx        xx        x',
+        'xo       xx        xxo       x',
         '                              ',
         'x                            x',
         '                              ',
@@ -22,13 +22,20 @@ class Stage extends Activity {
 
     tiles = [];
     dustParticles = [];
+    targets = [
+    ];
+
+    timer = 0;
 
     constructor(keys) {
         super();
         this.player = new Character(keys, FLARE, 'idle', true, new Vector2(64, 196));
 
         this.rawTiles.forEach((row, y) => [...row].forEach((tile, x) => {
-            if (tile !== ' ') this.tiles.push({ pos: new Vector2(x * 16, y * 16), size: new Vector2(16, 16) });
+            if (tile === 'x') this.tiles.push({ pos: new Vector2(x * 16, y * 16), size: new Vector2(16, 16) });
+        }));
+        this.rawTiles.forEach((row, y) => [...row].forEach((tile, x) => {
+            if (tile === 'o') this.targets.push({ pos: new Vector2(x * 16, y * 16), size: new Vector2(16, 16) });
         }));
     }
 
@@ -73,7 +80,6 @@ class Stage extends Activity {
         this.tiles.forEach(tile => {
             cx.fillRect(tile.pos.x, tile.pos.y, tile.size.x, tile.size.y);
         })
-
         
         cx.fillStyle = '#0008';
         this.rawTiles.forEach((row, y) => [...row].forEach((tile, x) => {
@@ -82,6 +88,19 @@ class Stage extends Activity {
             }
         }));
 
+        this.targets.forEach(target => {
+            cx.fillStyle = target.ok ? '#0f0' : '#f00';
+            cx.fillRect(target.pos.x, target.pos.y, target.size.x, target.size.y);
+        });
+
+        if (this.timer > -3600000 && this.targets.filter(target => !target.ok).length) {
+            this.timer-=1000;
+            cx.fillStyle = '#fff';
+        } else {
+            cx.fillStyle = '#8f8';
+        }
+        
+        cx.fillText(new Date(this.timer).toTimeString().slice(3, 9), 0, 0);
         cx.restore();
     }
 }

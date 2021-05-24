@@ -37,6 +37,10 @@ class Bullet extends Actor {
         });
         this.pos = newPos;
 
+        activity.targets.forEach(target => {
+            if (CollisionBox2.collidesWith(this, target)) target.ok = true;
+        })
+
         this.frameCount++;
     }
     
